@@ -23,7 +23,7 @@ var quoteArray = [
   { quote: "Are you a snooze person?" },
   { quote: "You have to get ride of one of your 5 senses, which one do you give up on?" },
   { quote: "Do you remember when you had an encounter a wild animal?" },
-  { quote: "Do you or did you play an musical instrument?" },
+  { quote: "Have you ever played a musical instrument, or do you play one now?" },
   { quote: "Do you shower in the evening or in the morning?" },
   { quote: "Comté or St-Nectaire?" },
   { quote: "What is your daily coffee maker?" },
