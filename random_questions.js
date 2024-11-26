@@ -1,4 +1,5 @@
-var quoteArray = [
+document.addEventListener("DOMContentLoaded", () => {
+  const quoteArray = [
   { quote: "You can pick one superpower, which one would you? 'With big powers come big responsabilities', what do you do with this super power?" },
   { quote: "What do you do in life that is not in your resume?" },
   { quote: "Did you ever face a corpse?" },
@@ -125,56 +126,36 @@ var quoteArray = [
   { quote: "What is the thing that can't be replaced if your appartment would burn?" },
 ];
 
-var colorArray = [
-  "#F07857", //
-  "#43A5BE", //
-  "#53BDA5", //
-  "#F5C26B", //
-  "#253342", //
-  "#4FB06D", //
-  "#F07857", //
-  "#5C62D6", //
-  "#FFFFFF", //
-  "#BE398D", //
-  "#D49137", //
-  "#BF2C34", //
-  "#696969", //
-];
+const colorArray = [
+    "#F07857", "#43A5BE", "#53BDA5", "#F5C26B", "#253342", "#4FB06D", "#5C62D6",
+  ];
 
-$(document).ready(function () {
+  const pickedQuotes = [];
+  const pickedColors = [];
+  const quoteText = document.getElementById("quote-text");
+  const body = document.body;
+  const button = document.getElementById("next-quote-btn");
+
+  function nextQuote() {
+    if (quoteArray.length === 0) {
+      quoteArray.push(...pickedQuotes.splice(0));
+    }
+
+    if (colorArray.length === 0) {
+      colorArray.push(...pickedColors.splice(0));
+    }
+
+    const randomColor = colorArray.splice(Math.floor(Math.random() * colorArray.length), 1)[0];
+    const randomQuote = quoteArray.splice(Math.floor(Math.random() * quoteArray.length), 1)[0];
+
+    pickedColors.push(randomColor);
+    pickedQuotes.push(randomQuote);
+
+    body.style.backgroundColor = randomColor;
+    quoteText.style.color = randomColor;
+    quoteText.textContent = randomQuote.quote;
+  }
+
+  button.addEventListener("click", nextQuote);
   nextQuote();
-}); // end of document ready function
-
-var pickedQuotes = [];
-var pickedColors = [];
-
-function nextQuote() {
-
-  // if no more quote in quoteArray, reset quoteArray and pickedQuotes
-  if (quoteArray.length == 0) {
-    quoteArray = pickedQuotes;
-    pickedQuotes = [];
-  }
-
-  if (colorArray.length == 0) {
-    colorArray = pickedColors;
-    pickedColors = [];
-  }
-
-  let randomColor = colorArray.splice(Math.floor(Math.random() * colorArray.length), 1)[0];
-  let randomQuote = quoteArray.splice(Math.floor(Math.random() * quoteArray.length), 1)[0];
-
-  pickedQuotes.push(randomQuote);
-  pickedColors.push(randomColor);
-
-  console.log(quoteArray);
-  console.log(pickedQuotes);
-  
-  $("#quote-text").text(
-    randomQuote.quote);
-
-  $("body").css("background-color", randomColor);
-  $("#quote-text").css("color", randomColor);
-  $("#quote-box button").css("background-color", randomColor);
-  $("i").css("color", randomColor);
-}
+});
