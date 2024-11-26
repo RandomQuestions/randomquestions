@@ -115,7 +115,7 @@ var quoteArray = [
   { quote: "How do you show you are upset without  telling "I'm upset" ? " },
   { quote: "Is a tongue stud a turn-on?" },
   { quote: "Let's admit that you can rob a million euros without getting caught, would you do it?" },
-  { quote: "How do hang up the laundry in order to dry? What about the socks in particular?" },
+  { quote: "How do hang up the laundry in order to dry? How do you deal with socks?" },
   { quote: "Go to bed early or late?" },
   { quote: "Should we tear down Google, Amazon, Facebook? How will that affect our lives?" },
   { quote: "Piano or guitar?" },
@@ -125,7 +125,6 @@ var quoteArray = [
   { quote: "What do your clothes say about yourself?" },
   { quote: "How was your last 7 days? Point out one positive thing and one that could have been better." },
   { quote: "What is the thing that can't be replaced if your appartment would burn?" },
-  
 ];
 
 var colorArray = [
