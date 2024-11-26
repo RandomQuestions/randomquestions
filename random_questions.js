@@ -135,20 +135,6 @@ const colorArray = [
   const quoteText = document.getElementById("quote-text");
   const body = document.body;
 
-  // Helper function to calculate brightness
-  function getBrightness(hexColor) {
-    const r = parseInt(hexColor.substr(1, 2), 16);
-    const g = parseInt(hexColor.substr(3, 2), 16);
-    const b = parseInt(hexColor.substr(5, 2), 16);
-    // Formula for brightness perception
-    return (r * 299 + g * 587 + b * 114) / 1000;
-  }
-
-  // Function to determine text color (light or dark) based on background brightness
-  function getTextColorForBackground(hexColor) {
-    return getBrightness(hexColor) > 128 ? "#000000" : "#FFFFFF"; // Light -> Black text, Dark -> White text
-  }
-
   function nextQuote() {
     if (quoteArray.length === 0) {
       quoteArray.push(...pickedQuotes.splice(0));
@@ -164,36 +150,11 @@ const colorArray = [
     pickedColors.push(randomColor);
     pickedQuotes.push(randomQuote);
 
-    const textColor = getTextColorForBackground(randomColor);
-
     body.style.backgroundColor = randomColor;
-    quoteText.style.color = textColor;
+    quoteText.style.color = randomColor;
     quoteText.textContent = randomQuote.quote;
   }
 
   body.addEventListener("click", nextQuote);
   nextQuote();
 });
-Explanation of Changes:
-Contrast Calculation:
-
-The getBrightness function calculates the perceived brightness of a color using its RGB components and a common formula for luminance perception.
-The getTextColorForBackground function checks this brightness value and chooses black (#000000) for light backgrounds and white (#FFFFFF) for dark backgrounds.
-Dynamic Text Color:
-
-The text color (quoteText.style.color) is dynamically set based on the background color to maintain readability.
-Updated CSS:
-Ensure that transitions for the text are smooth:
-
-css
-Copier le code
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  transition: background-color 0.5s ease-in-out;
-}
-
-#quote-text {
-  font-size: 2rem;
-  transition: color 0.5s ease-in-out;
-}
