@@ -68,7 +68,7 @@ var quoteArray = [
   { quote: "What drives you most, the past or the future?" },
   { quote: "Do you shower in the evening or in the morning ?" },
   { quote: "Do you remember when you had an encounter with a wild animal?" },
-  { quote: "Social media algorithmes speak about who we are and what we're interested in. Are you ready to show me your search recommandations on Instagram?" },
+  { quote: "Social media algorithmes speak about who we are and what we're interested in. Are you ready to share your Search recommandations on Instagram?" },
   { quote: "Who should play your role in the biopic of your life?" },
   { quote: "Imagine sex doesn't exist. \n  A startup comes up with the concept. Imagine the pitch." },
   { quote: "Do you prefer to stop eating cheese or stop having sex?" },
