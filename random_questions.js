@@ -134,7 +134,6 @@ const colorArray = [
   const pickedColors = [];
   const quoteText = document.getElementById("quote-text");
   const body = document.body;
-  const button = document.getElementById("next-quote-btn");
 
   function nextQuote() {
     if (quoteArray.length === 0) {
@@ -156,6 +155,6 @@ const colorArray = [
     quoteText.textContent = randomQuote.quote;
   }
 
-  button.addEventListener("click", nextQuote);
+  body.addEventListener("click", nextQuote);
   nextQuote();
 });
