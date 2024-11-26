@@ -110,7 +110,7 @@ var quoteArray = [
   { quote: "What invention could make a difference on your daily life?" },
   { quote: "What would be the best way to handle the financial question within a couple with important incomes gap?" },
   { quote: "Do you have memories of your first kiss?" },
-  { quote: "How do you show you are upset without  telling /"I'm upset/" ?" },
+  { quote: '''How do you show you are upset without  telling /"I'm upset/" ?''' },
   { quote: "Is a tongue stud a turn-on?" },
   { quote: "Let's admit that you can rob a million euros without getting caught, would you do it?" },
   { quote: "How do hang up the laundry in order to dry? How do you deal with socks?" },
