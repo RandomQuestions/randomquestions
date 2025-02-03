@@ -123,6 +123,8 @@ document.addEventListener("DOMContentLoaded", () => {
   { quote: "What is the best way to figure out someone's social backgrounds in a glimpse?" },
   { quote: "What do your clothes say about yourself?" },
   { quote: "How was your last 7 days? Point out one positive thing and one that could have been better." },
+  { quote: "How do you feel regarding spicy food?" },
+  { quote: "Did you ever felt like you were acting like your Mum or your Dad? In which situation was it?" },
   { quote: "What is the thing that can't be replaced if your appartment would burn?" },
 ];
 
