@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   { quote: "Do you think ghosts are real?\rWhat about aliens?" },
   { quote: "What was your first car?" },
   { quote: "Dog or cat?" },
+  { quote: "Do you consent to donate your organs once you will be gone?" },
   { quote: "Phò or Ramen?" },
   { quote: "Did you ever had a pet? What type of pet was it? What was it's name?" },
   { quote: "Would you use a selfdriving car without human driver? Without pedals and steering wheel?" },
