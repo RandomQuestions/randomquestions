@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
   { quote: "How do you feel regarding spicy food?" },
   { quote: "Did you ever felt like you were acting like your Mum or your Dad? In which situation was it?" },
   { quote: "Do you think you can land a passengers plane in case of emergency?" },
-  { quote: "What is the thing that can't be replaced if your appartment would burn?" },
+  { quote: "What can't be replaced if your appartment would burn?" },
 ];
 
 const colorArray = [
