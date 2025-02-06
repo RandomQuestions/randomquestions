@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
   { quote: "Do you keep track of a wish list or a list of things you would like to have?" },
   { quote: "When is your birthday? Do you belive in Zodiac signs?" },
   { quote: "Do you think that we are the most advanced civilisation that Earth ever carried?" },
-  { quote: "We offer you to go swimming in the Seine tomorrow morning, do you accept?" },
+  { quote: "You get the offer to have a swim in the Seine river, would you accept?" },
   { quote: "How do you picture yourself as a retired person?" },
   { quote: "What was your first car? Do you have a story to tell about it?" },
   { quote: "At what age is it too late to breakup with somone?" },
