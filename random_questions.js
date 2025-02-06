@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
   { quote: "You get the offer to have a swim in the Seine river, would you accept?" },
   { quote: "How do you picture yourself as a retired person?" },
   { quote: "What was your first car? Do you have a story to tell about it?" },
-  { quote: "At what age is it too late to breakup with somone?" },
+  { quote: "At what age is it too late to break up with someone?" },
   { quote: "Did you ever want to own and run a bar? If yes, what would it be like? What would be the name?" },
   { quote: "Have you ever gone on vacation to an all-inclusive hotel? How was it?" },
   { quote: "Have you ever been camping?" },
