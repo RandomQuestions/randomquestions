@@ -114,7 +114,7 @@ idocument.addEventListener("DOMContentLoaded", () => {
   { quote: "Do you have memories of your first kiss?" },
   { quote: "How do you show you are upset without  telling I'm upset ?" },
   { quote: "Is a tongue stud a turn-on?" },
-  { quote: "Let's admit that you can rob a million euros without getting caught, would you do it?" },
+  { quote: "If you can rob a million euros to someone without getting caught, would you do it?" },
   { quote: "How do hang up the laundry in order to dry? How do you deal with socks?" },
   { quote: "Do you rather sleep early or go to bed late?" },
   { quote: "Should we tear down Google, Amazon, Facebook? How will that affect our lives?" },
