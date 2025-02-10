@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
   { quote: "Do you remember when you had an encounter with a wild animal?" },
   { quote: "Social media algorithmes speak about who we are and what we're interested in. Are you ready to share your Search recommandations on Instagram?" },
   { quote: "Who should play your role in the biopic of your life?" },
-  { quote: "Imagine sex doesn't exist. \n  A startup comes up with the concept. Imagine the pitch." },
+  { quote: "What if sex doesn't exist. \n  A startup comes up with the concept. Imagine the pitch to sell it." },
   { quote: "Do you prefer to stop eating cheese or stop having sex?" },
   { quote: "Where and when were you last holidays? How was it?" },
   { quote: "What is your favorite sleeping outfit?" },
