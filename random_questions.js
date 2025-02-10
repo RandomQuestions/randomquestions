@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+idocument.addEventListener("DOMContentLoaded", () => {
   const quoteArray = [
   { quote: "You can pick one superpower, which one would you? 'With big powers come big responsabilities', what do you do with this super power?" },
   { quote: "What do you do in life that is not in your resume?" },
@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
   { quote: "Is a tongue stud a turn-on?" },
   { quote: "Let's admit that you can rob a million euros without getting caught, would you do it?" },
   { quote: "How do hang up the laundry in order to dry? How do you deal with socks?" },
-  { quote: "Go to bed early or late?" },
+  { quote: "Do you rather sleep early or go to bed late?" },
   { quote: "Should we tear down Google, Amazon, Facebook? How will that affect our lives?" },
   { quote: "Piano or guitar?" },
   { quote: "What moments of your life would you drop in the director's cuts? Or request postproduction special effects?" },
