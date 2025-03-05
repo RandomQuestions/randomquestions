@@ -1,4 +1,4 @@
-idocument.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
   const quoteArray = [
   { quote: "You can pick one superpower, which one would you? 'With big powers come big responsabilities', what do you do with this super power?" },
   { quote: "What do you do in life that is not in your resume?" },
