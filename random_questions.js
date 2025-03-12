@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
   { quote: "Do you own a library card?" },
   { quote: "What is your morning routine?" },
   { quote: "Are you a snooze person?" },
-  { quote: "You have to get ride of one of your 5 senses, which one do you give up on?" },
+  { quote: "You have to get rid of one of your 5 senses, which one do you give up on?" },
   { quote: "Do you remember when you had an encounter a wild animal?" },
   { quote: "Have you ever played a musical instrument, or do you play one now?" },
   { quote: "Do you shower in the evening or in the morning?" },
