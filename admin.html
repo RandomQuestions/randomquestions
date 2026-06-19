@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Random Questions</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #f0ebe3;
+      --surface: #ffffff;
+      --text: #1a1a1a;
+      --muted: #888;
+      --accent: #1a1a1a;
+      --border: #ddd;
+      --radius: 8px;
+    }
+
+    body {
+      min-height: 100dvh;
+      background: var(--bg);
+      font-family: system-ui, sans-serif;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      font-family: 'Georgia', serif;
+      font-size: 1.4rem;
+      font-weight: normal;
+      margin-bottom: 0.25rem;
+    }
+
+    .subtitle {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.4rem;
+    }
+
+    input[type="email"],
+    input[type="password"],
+    textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.65rem 0.85rem;
+      font-size: 1rem;
+      font-family: inherit;
+      color: var(--text);
+      background: #fafafa;
+      margin-bottom: 1.2rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--accent);
+      background: #fff;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    button {
+      width: 100%;
+      padding: 0.75rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    button:hover { opacity: 0.85; }
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .error {
+      font-size: 0.85rem;
+      color: #c0392b;
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    .success {
+      font-size: 0.85rem;
+      color: #27ae60;
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    .logout-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 2rem;
+    }
+
+    .logout-btn {
+      background: none;
+      color: var(--muted);
+      font-size: 0.75rem;
+      width: auto;
+      padding: 0;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: underline;
+    }
+
+    .logout-btn:hover { opacity: 0.6; }
+
+    #back-home {
+      display: block;
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    #back-home:hover { color: var(--text); }
+
+    /* sections toggled by JS */
+    #login-section, #admin-section { display: none; }
+  </style>
+</head>
+<body>
+
+<div class="card">
+
+  <!-- Login -->
+  <div id="login-section">
+    <h1>Random Questions</h1>
+    <p class="subtitle">Admin login</p>
+    <p class="error" id="login-error"></p>
+    <label for="email">Email</label>
+    <input type="email" id="email" autocomplete="username" />
+    <label for="password">Password</label>
+    <input type="password" id="password" autocomplete="current-password" />
+    <button id="login-btn">Sign in</button>
+    <a href="index.html" id="back-home">← Back to questions</a>
+  </div>
+
+  <!-- Admin panel -->
+  <div id="admin-section">
+    <div class="logout-row">
+      <div>
+        <h1>Random Questions</h1>
+        <p class="subtitle">Admin</p>
+      </div>
+      <button class="logout-btn" id="logout-btn">Sign out</button>
+    </div>
+
+    <label for="new-question">New question</label>
+    <textarea id="new-question" placeholder="Type your question here…"></textarea>
+    <p class="error" id="add-error"></p>
+    <p class="success" id="add-success">Question added!</p>
+    <button id="add-btn">Add question</button>
+    <a href="index.html" id="back-home2">← Back to questions</a>
+  </div>
+
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyANdppYvo-__a3Yn1AVTZ_7dt6Om1pIvK4",
+    authDomain: "random-questions-c103f.firebaseapp.com",
+    projectId: "random-questions-c103f",
+    storageBucket: "random-questions-c103f.firebasestorage.app",
+    messagingSenderId: "1047016303236",
+    appId: "1:1047016303236:web:ba6bde10ceed4bfe0030d1"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const loginSection = document.getElementById("login-section");
+  const adminSection = document.getElementById("admin-section");
+  const loginError = document.getElementById("login-error");
+  const addError = document.getElementById("add-error");
+  const addSuccess = document.getElementById("add-success");
+
+  // Auth state
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      loginSection.style.display = "none";
+      adminSection.style.display = "block";
+    } else {
+      loginSection.style.display = "block";
+      adminSection.style.display = "none";
+    }
+  });
+
+  // Login
+  document.getElementById("login-btn").addEventListener("click", async () => {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    loginError.style.display = "none";
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (e) {
+      loginError.textContent = "Invalid email or password.";
+      loginError.style.display = "block";
+    }
+  });
+
+  // Logout
+  document.getElementById("logout-btn").addEventListener("click", () => signOut(auth));
+
+  // Add question
+  document.getElementById("add-btn").addEventListener("click", async () => {
+    const text = document.getElementById("new-question").value.trim();
+    addError.style.display = "none";
+    addSuccess.style.display = "none";
+
+    if (!text) {
+      addError.textContent = "Please enter a question.";
+      addError.style.display = "block";
+      return;
+    }
+
+    const btn = document.getElementById("add-btn");
+    btn.disabled = true;
+
+    try {
+      await addDoc(collection(db, "questions"), {
+        text,
+        status: "published",
+        createdAt: serverTimestamp(),
+        rand: Math.random()
+      });
+      document.getElementById("new-question").value = "";
+      addSuccess.style.display = "block";
+    } catch (e) {
+      addError.textContent = "Failed to add question. Try again.";
+      addError.style.display = "block";
+    }
+
+    btn.disabled = false;
+  });
+</script>
+
+</body>
+</html>
