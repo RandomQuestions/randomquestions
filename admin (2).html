@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Random Questions</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #f0ebe3;
+      --surface: #ffffff;
+      --text: #1a1a1a;
+      --muted: #888;
+      --accent: #1a1a1a;
+      --border: #ddd;
+      --radius: 8px;
+      --danger: #c0392b;
+      --success-color: #27ae60;
+    }
+
+    body {
+      min-height: 100dvh;
+      background: var(--bg);
+      font-family: system-ui, sans-serif;
+      color: var(--text);
+      padding: 2rem 1rem;
+    }
+
+    /* ── Layout ── */
+    .container {
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── Typography ── */
+    h1 {
+      font-family: 'Georgia', serif;
+      font-size: 1.4rem;
+      font-weight: normal;
+    }
+
+    h2 {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+    }
+
+    .subtitle {
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 0.2rem;
+    }
+
+    /* ── Header row ── */
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 2rem;
+    }
+
+    /* ── Form elements ── */
+    label {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.4rem;
+    }
+
+    input[type="email"],
+    input[type="password"],
+    textarea,
+    select {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.65rem 0.85rem;
+      font-size: 1rem;
+      font-family: inherit;
+      color: var(--text);
+      background: #fafafa;
+      margin-bottom: 1.2rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--accent);
+      background: #fff;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+      margin-bottom: 0.75rem;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+
+    .form-row select {
+      width: auto;
+      margin-bottom: 0;
+      flex-shrink: 0;
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      padding: 0.65rem 1.2rem;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 0.85rem;
+      font-family: inherit;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn:hover { opacity: 0.8; }
+    .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-ghost {
+      background: none;
+      color: var(--muted);
+      font-size: 0.75rem;
+      padding: 0.4rem 0.75rem;
+      border: 1px solid var(--border);
+    }
+    .btn-danger {
+      background: none;
+      color: var(--danger);
+      font-size: 0.75rem;
+      padding: 0.4rem 0.75rem;
+      border: 1px solid #f0c0bb;
+    }
+    .btn-danger:hover { background: #fdf0ef; opacity: 1; }
+
+    .btn-link {
+      background: none;
+      color: var(--muted);
+      font-size: 0.75rem;
+      padding: 0;
+      text-decoration: underline;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* ── Feedback messages ── */
+    .msg {
+      font-size: 0.85rem;
+      margin-bottom: 0.75rem;
+      display: none;
+    }
+    .msg.error { color: var(--danger); }
+    .msg.success { color: var(--success-color); }
+
+    /* ── Questions list ── */
+    #questions-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .q-item {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      background: #fafafa;
+    }
+
+    .q-item.hidden-q {
+      opacity: 0.55;
+    }
+
+    .q-text {
+      font-size: 0.95rem;
+      line-height: 1.45;
+      margin-bottom: 0.75rem;
+      color: var(--text);
+    }
+
+    .q-meta {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .q-actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    /* Edit inline form */
+    .q-edit-form {
+      display: none;
+      margin-top: 0.75rem;
+    }
+
+    .q-edit-form textarea {
+      margin-bottom: 0.5rem;
+    }
+
+    .q-edit-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    /* Status badge */
+    .badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .badge-published { background: #e4f5eb; color: #1e7e3c; }
+    .badge-hidden { background: #f0f0f0; color: #888; }
+
+    /* Empty state */
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+      padding: 2rem 0;
+    }
+
+    /* Reset password link */
+    .reset-link {
+      display: block;
+      text-align: center;
+      margin-top: 0.75rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    a.back-link {
+      display: block;
+      text-align: center;
+      margin-top: 1.25rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-decoration: none;
+    }
+    a.back-link:hover { color: var(--text); }
+
+    /* Login card centered */
+    #login-section {
+      display: none;
+      min-height: 100dvh;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #login-section .card {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    #admin-section { display: none; }
+
+    /* Confirm overlay */
+    #confirm-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    #confirm-overlay.active { display: flex; }
+
+    .confirm-box {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      max-width: 360px;
+      width: 100%;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    }
+
+    .confirm-box p {
+      font-size: 0.95rem;
+      margin-bottom: 1.25rem;
+      line-height: 1.5;
+    }
+
+    .confirm-actions {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: flex-end;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Login ── -->
+<div id="login-section">
+  <div class="card">
+    <h1>Random Questions</h1>
+    <p class="subtitle" style="margin-bottom:2rem">Admin login</p>
+    <p class="msg error" id="login-error"></p>
+    <label for="email">Email</label>
+    <input type="email" id="email" autocomplete="username" />
+    <label for="password">Password</label>
+    <input type="password" id="password" autocomplete="current-password" />
+    <button class="btn btn-primary" id="login-btn" style="width:100%">Sign in</button>
+    <span class="reset-link" id="reset-link">Forgot password?</span>
+    <p class="msg success" id="reset-success" style="text-align:center;margin-top:0.75rem">Reset email sent — check your inbox.</p>
+    <a href="index.html" class="back-link">← Back to questions</a>
+  </div>
+</div>
+
+<!-- ── Admin ── -->
+<div id="admin-section">
+  <div class="container">
+
+    <!-- Header -->
+    <div class="header-row">
+      <div>
+        <h1>Random Questions</h1>
+        <p class="subtitle">Admin</p>
+      </div>
+      <button class="btn btn-link" id="logout-btn">Sign out</button>
+    </div>
+
+    <!-- Add question -->
+    <div class="card">
+      <h2>Add a question</h2>
+      <label for="new-question">Question</label>
+      <textarea id="new-question" placeholder="Type your question here…"></textarea>
+      <div class="form-row">
+        <select id="new-status">
+          <option value="published">Published</option>
+          <option value="hidden">Hidden</option>
+        </select>
+        <button class="btn btn-primary" id="add-btn">Add question</button>
+      </div>
+      <p class="msg error" id="add-error"></p>
+      <p class="msg success" id="add-success">Question added!</p>
+    </div>
+
+    <!-- Questions list -->
+    <div class="card">
+      <h2>All questions</h2>
+      <div id="questions-list"><p class="empty">Loading…</p></div>
+    </div>
+
+    <a href="index.html" class="back-link">← Back to questions</a>
+  </div>
+</div>
+
+<!-- ── Delete confirm overlay ── -->
+<div id="confirm-overlay">
+  <div class="confirm-box">
+    <p>Delete this question permanently?</p>
+    <div class="confirm-actions">
+      <button class="btn btn-ghost" id="confirm-cancel">Cancel</button>
+      <button class="btn btn-danger" id="confirm-delete">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import {
+    getAuth, signInWithEmailAndPassword, signOut,
+    onAuthStateChanged, sendPasswordResetEmail
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import {
+    getFirestore, collection, addDoc, updateDoc, deleteDoc,
+    doc, getDocs, orderBy, query, serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyANdppYvo-__a3Yn1AVTZ_7dt6Om1pIvK4",
+    authDomain: "random-questions-c103f.firebaseapp.com",
+    projectId: "random-questions-c103f",
+    storageBucket: "random-questions-c103f.firebasestorage.app",
+    messagingSenderId: "1047016303236",
+    appId: "1:1047016303236:web:ba6bde10ceed4bfe0030d1"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // ── UI refs ──
+  const loginSection = document.getElementById("login-section");
+  const adminSection = document.getElementById("admin-section");
+  const loginError = document.getElementById("login-error");
+  const addError = document.getElementById("add-error");
+  const addSuccess = document.getElementById("add-success");
+  const questionsList = document.getElementById("questions-list");
+  const confirmOverlay = document.getElementById("confirm-overlay");
+
+  let pendingDeleteId = null;
+
+  // ── Auth state ──
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      loginSection.style.display = "none";
+      adminSection.style.display = "block";
+      loadQuestions();
+    } else {
+      loginSection.style.display = "flex";
+      adminSection.style.display = "none";
+    }
+  });
+
+  // ── Login ──
+  document.getElementById("login-btn").addEventListener("click", async () => {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    loginError.style.display = "none";
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch {
+      loginError.textContent = "Invalid email or password.";
+      loginError.style.display = "block";
+    }
+  });
+
+  // Enter key on login fields
+  ["email","password"].forEach(id => {
+    document.getElementById(id).addEventListener("keydown", e => {
+      if (e.key === "Enter") document.getElementById("login-btn").click();
+    });
+  });
+
+  // ── Password reset ──
+  document.getElementById("reset-link").addEventListener("click", async () => {
+    const email = document.getElementById("email").value.trim();
+    if (!email) {
+      loginError.textContent = "Enter your email above first.";
+      loginError.style.display = "block";
+      return;
+    }
+    try {
+      await sendPasswordResetEmail(auth, email);
+      document.getElementById("reset-success").style.display = "block";
+      loginError.style.display = "none";
+    } catch {
+      loginError.textContent = "Could not send reset email. Check the address.";
+      loginError.style.display = "block";
+    }
+  });
+
+  // ── Logout ──
+  document.getElementById("logout-btn").addEventListener("click", () => signOut(auth));
+
+  // ── Load questions ──
+  async function loadQuestions() {
+    questionsList.innerHTML = "<p class='empty'>Loading…</p>";
+    try {
+      const snap = await getDocs(collection(db, "questions"));
+      if (snap.empty) {
+        questionsList.innerHTML = "<p class='empty'>No questions yet.</p>";
+        return;
+      }
+      questionsList.innerHTML = "";
+      snap.forEach(docSnap => renderQuestion(docSnap.id, docSnap.data()));
+    } catch (e) {
+      questionsList.innerHTML = "<p class='empty' style='color:#c0392b'>Failed to load questions.</p>";
+    }
+  }
+
+  // ── Render a single question row ──
+  function renderQuestion(id, data) {
+    const item = document.createElement("div");
+    item.className = `q-item${data.status === "hidden" ? " hidden-q" : ""}`;
+    item.dataset.id = id;
+
+    const badgeClass = data.status === "published" ? "badge-published" : "badge-hidden";
+    const badgeLabel = data.status === "published" ? "Published" : "Hidden";
+    const toggleLabel = data.status === "published" ? "Hide" : "Publish";
+
+    item.innerHTML = `
+      <p class="q-text">${escapeHtml(data.text)}</p>
+      <p class="q-meta">
+        <span class="badge ${badgeClass}">${badgeLabel}</span>
+      </p>
+      <div class="q-actions">
+        <button class="btn btn-ghost edit-btn">Edit</button>
+        <button class="btn btn-ghost toggle-btn">${toggleLabel}</button>
+        <button class="btn btn-danger delete-btn">Delete</button>
+      </div>
+      <div class="q-edit-form">
+        <textarea class="edit-textarea">${escapeHtml(data.text)}</textarea>
+        <div class="q-edit-actions">
+          <button class="btn btn-primary save-btn">Save</button>
+          <button class="btn btn-ghost cancel-btn">Cancel</button>
+        </div>
+      </div>
+    `;
+
+    // Edit
+    item.querySelector(".edit-btn").addEventListener("click", () => {
+      const form = item.querySelector(".q-edit-form");
+      const isOpen = form.style.display === "block";
+      form.style.display = isOpen ? "none" : "block";
+      item.querySelector(".edit-btn").textContent = isOpen ? "Edit" : "Cancel edit";
+    });
+
+    // Cancel edit
+    item.querySelector(".cancel-btn").addEventListener("click", () => {
+      item.querySelector(".q-edit-form").style.display = "none";
+      item.querySelector(".edit-btn").textContent = "Edit";
+    });
+
+    // Save edit
+    item.querySelector(".save-btn").addEventListener("click", async () => {
+      const newText = item.querySelector(".edit-textarea").value.trim();
+      if (!newText) return;
+      const btn = item.querySelector(".save-btn");
+      btn.disabled = true;
+      try {
+        await updateDoc(doc(db, "questions", id), { text: newText });
+        item.querySelector(".q-text").textContent = newText;
+        item.querySelector(".edit-textarea").value = newText;
+        item.querySelector(".q-edit-form").style.display = "none";
+        item.querySelector(".edit-btn").textContent = "Edit";
+      } catch {
+        alert("Failed to save. Try again.");
+      }
+      btn.disabled = false;
+    });
+
+    // Toggle status
+    item.querySelector(".toggle-btn").addEventListener("click", async () => {
+      const newStatus = data.status === "published" ? "hidden" : "published";
+      try {
+        await updateDoc(doc(db, "questions", id), { status: newStatus });
+        data.status = newStatus;
+        // Re-render this item in place
+        const newItem = document.createElement("div");
+        newItem.innerHTML = "";
+        item.replaceWith(newItem);
+        questionsList.replaceChild(createRenderedItem(id, data), newItem);
+        loadQuestions(); // simplest: just reload the list
+      } catch {
+        alert("Failed to update status. Try again.");
+      }
+    });
+
+    // Delete
+    item.querySelector(".delete-btn").addEventListener("click", () => {
+      pendingDeleteId = id;
+      confirmOverlay.classList.add("active");
+    });
+
+    questionsList.appendChild(item);
+  }
+
+  // Helper to re-render (used by toggle)
+  function createRenderedItem(id, data) {
+    const tmp = document.createElement("div");
+    renderQuestion(id, data);
+    return tmp;
+  }
+
+  // ── Delete confirm ──
+  document.getElementById("confirm-cancel").addEventListener("click", () => {
+    confirmOverlay.classList.remove("active");
+    pendingDeleteId = null;
+  });
+
+  document.getElementById("confirm-delete").addEventListener("click", async () => {
+    if (!pendingDeleteId) return;
+    try {
+      await deleteDoc(doc(db, "questions", pendingDeleteId));
+      confirmOverlay.classList.remove("active");
+      pendingDeleteId = null;
+      loadQuestions();
+    } catch {
+      alert("Failed to delete. Try again.");
+    }
+  });
+
+  // ── Add question ──
+  document.getElementById("add-btn").addEventListener("click", async () => {
+    const text = document.getElementById("new-question").value.trim();
+    const status = document.getElementById("new-status").value;
+    addError.style.display = "none";
+    addSuccess.style.display = "none";
+
+    if (!text) {
+      addError.textContent = "Please enter a question.";
+      addError.style.display = "block";
+      return;
+    }
+
+    const btn = document.getElementById("add-btn");
+    btn.disabled = true;
+    try {
+      await addDoc(collection(db, "questions"), {
+        text,
+        status,
+        createdAt: serverTimestamp(),
+        rand: Math.random()
+      });
+      document.getElementById("new-question").value = "";
+      document.getElementById("new-status").value = "published";
+      addSuccess.style.display = "block";
+      loadQuestions();
+    } catch {
+      addError.textContent = "Failed to add question. Try again.";
+      addError.style.display = "block";
+    }
+    btn.disabled = false;
+  });
+
+  // ── Helpers ──
+  function escapeHtml(str) {
+    return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  }
+</script>
+</body>
+</html>
