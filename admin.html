@@ -485,15 +485,19 @@
   async function loadQuestions() {
     questionsList.innerHTML = "<p class='empty'>Loading…</p>";
     try {
+      console.log("Starting loadQuestions...");
       const snap = await getDocs(collection(db, "questions"));
+      console.log("Query succeeded. Documents found:", snap.size);
       if (snap.empty) {
         questionsList.innerHTML = "<p class='empty'>No questions yet.</p>";
         return;
       }
       questionsList.innerHTML = "";
       snap.forEach(docSnap => renderQuestion(docSnap.id, docSnap.data()));
+      console.log("Questions rendered successfully.");
     } catch (e) {
-      questionsList.innerHTML = "<p class='empty' style='color:#c0392b'>Failed to load questions.</p>";
+      console.error("Error loading questions:", e);
+      questionsList.innerHTML = "<p class='empty' style='color:#c0392b'>Failed to load questions.<br><small>" + escapeHtml(e.message) + "</small></p>";
     }
   }
 
